@@ -1,6 +1,5 @@
 import React, { createRef, useEffect, useState } from 'react'
-import { Alert, Platform, SectionList, View } from 'react-native'
-import Box from '../../components/atoms/Box'
+import { Alert, SectionList } from 'react-native'
 import Header from '../../components/organisms/Header'
 import HourlyCarousel from '../../components/organisms/HourlyCarousel'
 import Locations from '../../components/organisms/Locations'
@@ -19,6 +18,7 @@ import { location } from '../../types/location'
 import {
   DailyContainer,
   HourlyContainer,
+  InfoContainer,
   StyledSafeArea
 } from './Dashboard.styled'
 import LoadingScreen from '../../components/organisms/Loading'
@@ -125,8 +125,10 @@ const Dashboard = () => {
       top: 0,
       left: 0,
       right: 0,
-      height: 200 - animatedHeightVal.value,
-      zIndex: 300
+      height:
+        animatedHeightVal.value > 100 ? 200 - animatedHeightVal.value : 80,
+      zIndex: 300,
+      backgroundColor: 'pink'
     }
   })
 
@@ -154,7 +156,7 @@ const Dashboard = () => {
         ) : (
           <>
             {dailyData.length && hourlyData.length && currentConditions ? (
-              <View style={{ position: 'relative' }}>
+              <InfoContainer>
                 <Animated.View style={[heroAnim]}>
                   <Hero
                     weatherInfo={currentConditions.weather[0]}
@@ -214,13 +216,12 @@ const Dashboard = () => {
                     }
                   }}
                   onScroll={(e) => {
-                    console.log(e.nativeEvent.contentOffset.y)
                     setScrollHeight(e.nativeEvent.contentOffset.y)
                     animatedHeightVal.value =
                       200 - e.nativeEvent.contentOffset.y
                   }}
                 />
-              </View>
+              </InfoContainer>
             ) : null}
           </>
         )}

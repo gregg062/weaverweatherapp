@@ -12,6 +12,7 @@ import {
   Probability
 } from './DailyCell.styled'
 import Spacer from '../../atoms/Spacer'
+import { useTheme } from 'styled-components'
 
 interface DailyCellProps {
   item: weatherObject
@@ -19,10 +20,11 @@ interface DailyCellProps {
 }
 
 const DailyCell: FC<DailyCellProps> = ({ item, index }) => {
+  const { colors } = useTheme()
   return (
     <DailyCard>
       <Day>
-        <Typography>
+        <Typography variant="label" weight="500">
           {index === 0 ? 'Today' : moment.unix(item.dt).format('dddd')}
         </Typography>
       </Day>
@@ -32,9 +34,13 @@ const DailyCell: FC<DailyCellProps> = ({ item, index }) => {
       </Probability>
       <IconContainer>{IconLookup(item.weather[0], 30)}</IconContainer>
       <HighLow>
-        <Typography>{item.temp.min.toFixed(0)}&deg;</Typography>
-        <Spacer orientation="all" size={4} />
-        <Typography>{item.temp.max.toFixed(0)}&deg;</Typography>
+        <Typography variant="title" weight="500">
+          {item.temp.min.toFixed(0)}&deg;
+        </Typography>
+        <Spacer orientation="all" size={8} />
+        <Typography variant="title" weight="500" color={colors.secondaryText}>
+          {item.temp.max.toFixed(0)}&deg;
+        </Typography>
       </HighLow>
     </DailyCard>
   )

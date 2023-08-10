@@ -34,18 +34,18 @@ const Details: FC<DetailProps> = ({ data }) => {
       <DetailsInner>
         <DetailCell
           needMargin
-          icon={<UxiIcon />}
+          icon={<UxiIcon width={30} />}
           title="UV index"
           detail={data?.uxi ? calcUvi(data?.uxi) : ''}
         />
         <DetailCell
-          icon={<Humidity />}
+          icon={<Humidity width={30} />}
           title="Humidity"
           detail={data?.humidity + '%'}
         />
         <DetailCell
           needMargin
-          icon={<Wind />}
+          icon={<Wind width={30} />}
           title="Wind"
           detail={data?.wind + ' mph'}
         />

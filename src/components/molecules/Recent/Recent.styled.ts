@@ -5,6 +5,7 @@ const LocationContainer = styled.View`
   flex-direction: row;
   background-color: ${({ theme }) => theme.colors.cardBackground};
   border-radius: 8px;
+  height: 72px;
   overflow: hidden;
 `
 

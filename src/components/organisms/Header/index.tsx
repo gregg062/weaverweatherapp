@@ -44,7 +44,7 @@ const Header: FC<Props> = ({
   const widthVal = useSharedValue<string>('30%')
   const buttonOpac = useSharedValue<number>(0)
   const detailsOpac = useSharedValue<number>(1)
-  const theme = useTheme()
+  const { colors } = useTheme()
 
   useEffect(() => {
     if (open) {
@@ -80,7 +80,7 @@ const Header: FC<Props> = ({
       height: 40,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: 'white',
+      borderColor: colors.border,
       position: 'absolute',
       top: 16,
       left: !open
@@ -137,7 +137,7 @@ const Header: FC<Props> = ({
           </HeaderButton>
         ) : (
           <LocationInput
-            placeholderTextColor={theme.colors.secondaryText}
+            placeholderTextColor={colors.secondaryText}
             placeholder="Search for a city or ZIP code"
             value={input}
             onChange={(e) => {

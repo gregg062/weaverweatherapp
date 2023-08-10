@@ -14,7 +14,9 @@ const Daily: FC<CarouselProps> = ({ data }) => {
 
   return (
     <DailyContainer>
-      <Typography>7 Day Forecast</Typography>
+      <Typography uppercase spacingBottom={8}>
+        7 Day Forecast
+      </Typography>
       <FlatList
         scrollEnabled={false}
         data={sevenDaysData}

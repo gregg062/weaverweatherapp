@@ -5,6 +5,8 @@ import Header from '../src/components/organisms/Header'
 import { ThemeProvider } from 'styled-components'
 import theme from '../src/theme'
 
+jest.mock('axios')
+
 describe('<Header />', () => {
   it('renders correctly', () => {
     const { getByText } = render(

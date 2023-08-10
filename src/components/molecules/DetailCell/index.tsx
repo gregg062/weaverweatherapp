@@ -2,6 +2,7 @@ import React, { FC, ReactElement } from 'react'
 import Typography from '../../atoms/Typography'
 import { DetailCard } from './DetailCell.styled'
 import Spacer from '../../atoms/Spacer'
+import { useTheme } from 'styled-components'
 
 interface CellProps {
   needMargin?: boolean
@@ -10,6 +11,7 @@ interface CellProps {
   detail?: string
 }
 const DetailCell: FC<CellProps> = ({ needMargin, icon, title, detail }) => {
+  const { colors } = useTheme()
   return (
     <DetailCard needMargin={needMargin ?? false}>
       {icon}
@@ -17,7 +19,9 @@ const DetailCell: FC<CellProps> = ({ needMargin, icon, title, detail }) => {
       <Typography variant="title" weight="500" spacingBottom={4}>
         {title}
       </Typography>
-      <Typography>{detail}</Typography>
+      <Typography variant="title" color={colors.secondaryText}>
+        {detail}
+      </Typography>
     </DetailCard>
   )
 }

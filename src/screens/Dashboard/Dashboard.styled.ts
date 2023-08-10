@@ -5,6 +5,9 @@ const StyledSafeArea = styled(SafeAreaView)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.appBackground};
 `
+const InfoContainer = styled.View`
+  position: relative;
+`
 
 const HourlyContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.appBackground};
@@ -15,4 +18,4 @@ const DailyContainer = styled.View`
   padding: 20px;
 `
 
-export { DailyContainer, StyledSafeArea, HourlyContainer }
+export { DailyContainer, StyledSafeArea, HourlyContainer, InfoContainer }

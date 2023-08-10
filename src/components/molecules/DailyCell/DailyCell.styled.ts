@@ -8,23 +8,23 @@ const DailyCard = styled.View`
 `
 
 const Day = styled.View`
-  width: 30%;
+  width: 35%;
 `
 
 const Probability = styled.View`
-  width: 25%;
+  width: 20%;
   flex-direction: row;
   align-items: center;
 `
 
 const IconContainer = styled.View`
-  width: 25%;
+  width: 20%;
   align-items: center;
 `
 
 const HighLow = styled.View`
   flex-direction: row;
-  width: 20%;
+  width: 25%;
   justify-content: flex-end;
 `
 

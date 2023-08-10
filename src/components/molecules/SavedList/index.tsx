@@ -56,7 +56,7 @@ const SavedList: FC<SavedListProps> = ({
           }
         }}
         ItemSeparatorComponent={() => {
-          return <Spacer orientation="vertical" size={4} />
+          return <Spacer orientation="vertical" size={8} />
         }}
       />
     </>
