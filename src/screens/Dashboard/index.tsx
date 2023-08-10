@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState } from 'react'
-import { Alert, SectionList } from 'react-native'
+import { Alert, Platform, SectionList, View } from 'react-native'
 import Box from '../../components/atoms/Box'
 import Header from '../../components/organisms/Header'
 import HourlyCarousel from '../../components/organisms/HourlyCarousel'
@@ -22,6 +22,11 @@ import {
   StyledSafeArea
 } from './Dashboard.styled'
 import LoadingScreen from '../../components/organisms/Loading'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue
+} from 'react-native-reanimated'
 
 const homeSections = [
   { type: 'Hourly', data: [{}] },
@@ -40,6 +45,8 @@ const Dashboard = () => {
   const [myLocation, setMyLocation] = useState<location | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const sectionListRef = createRef<SectionList<any>>()
+  const animatedHeightVal = useSharedValue(200)
+  const safeArea = useSafeAreaInsets()
 
   const getInfo = async () => {
     const response = await getMyCurrentLocation()
@@ -90,9 +97,16 @@ const Dashboard = () => {
     }
   }
 
+  const requestLocationPerm = async () => {
+    const response = await requestLocation()
+    if (response) {
+      getInfo()
+    }
+  }
+
   useEffect(() => {
     getInfo()
-    requestLocation()
+    requestLocationPerm()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -105,91 +119,112 @@ const Dashboard = () => {
     })
   }
 
+  const heroAnim = useAnimatedStyle(() => {
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: 200 - animatedHeightVal.value,
+      zIndex: 300
+    }
+  })
+
   return (
-    <StyledSafeArea edges={['top']}>
-      <Header
-        close={showLocations}
-        setLocation={(local) => {
-          const regex = /^\d{5}(-\d{4})?$/
-          if (regex.test(local)) {
-            getWeatherFromZip(local)
-          } else if (local.length > 0) {
-            getWeather(local)
-          }
-        }}
-        action={(show) => {
-          setShowLocations(show)
-        }}
-        cityInfo={locationDetails}
-        loading={loading}
-      />
-      {loading ? (
-        <LoadingScreen />
-      ) : (
-        <>
-          {dailyData.length && hourlyData.length && currentConditions ? (
-            <Box flex={1} backgroundcolor={theme.colors.appBackground}>
-              <Hero
-                weatherInfo={currentConditions.weather[0]}
-                feels={(currentConditions?.feels_like).toFixed(0)}
-                temp={currentConditions.temp.toFixed(0)}
-                heightVal={scrollHieght}
-                high={dailyData[0].temp.max.toFixed(0)}
-                low={dailyData[0].temp.min.toFixed(0)}
-              />
-              <SectionList
-                ref={sectionListRef}
-                bounces={false}
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  backgroundColor: theme.colors.appBackground,
-                  marginTop: 0
-                }}
-                keyExtractor={(index) => index.toString()}
-                sections={homeSections}
-                stickySectionHeadersEnabled
-                renderItem={({ section }) => {
-                  switch (section.type) {
-                    case 'Hourly':
-                      return (
-                        <HourlyContainer>
-                          <HourlyCarousel
-                            data={hourlyData}
-                            timezone={timeZone}
+    <>
+      <StyledSafeArea edges={['top']}>
+        <Header
+          close={showLocations}
+          setLocation={(local) => {
+            const regex = /^\d{5}(-\d{4})?$/
+            if (regex.test(local)) {
+              getWeatherFromZip(local)
+            } else if (local.length > 0) {
+              getWeather(local)
+            }
+          }}
+          action={(show) => {
+            setShowLocations(show)
+          }}
+          cityInfo={locationDetails}
+          loading={loading}
+        />
+        {loading ? (
+          <LoadingScreen />
+        ) : (
+          <>
+            {dailyData.length && hourlyData.length && currentConditions ? (
+              <View style={{ position: 'relative' }}>
+                <Animated.View style={[heroAnim]}>
+                  <Hero
+                    weatherInfo={currentConditions.weather[0]}
+                    feels={(currentConditions?.feels_like).toFixed(0)}
+                    temp={currentConditions.temp.toFixed(0)}
+                    heightVal={scrollHieght}
+                    high={dailyData[0].temp.max.toFixed(0)}
+                    low={dailyData[0].temp.min.toFixed(0)}
+                  />
+                </Animated.View>
+                <SectionList
+                  ref={sectionListRef}
+                  scrollEventThrottle={16}
+                  bounces={false}
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{
+                    backgroundColor: theme.colors.appBackground,
+                    marginTop: 0,
+                    zIndex: -1
+                  }}
+                  contentContainerStyle={{ paddingTop: 200 }}
+                  keyExtractor={(index) => index.toString()}
+                  sections={homeSections}
+                  stickySectionHeadersEnabled
+                  renderItem={({ section }) => {
+                    switch (section.type) {
+                      case 'Hourly':
+                        return (
+                          <HourlyContainer>
+                            <HourlyCarousel
+                              data={hourlyData}
+                              timezone={timeZone}
+                            />
+                          </HourlyContainer>
+                        )
+                      case 'Daily':
+                        return (
+                          <DailyContainer>
+                            <Daily data={dailyData} />
+                          </DailyContainer>
+                        )
+                      case 'Other':
+                        return (
+                          <Details
+                            data={{
+                              uxi: currentConditions.uvi,
+                              humidity: currentConditions.humidity,
+                              wind: currentConditions.wind_speed,
+                              sunrise: currentConditions.sunrise,
+                              sunset: currentConditions.sunset,
+                              timezone: timeZone
+                            }}
                           />
-                        </HourlyContainer>
-                      )
-                    case 'Daily':
-                      return (
-                        <DailyContainer>
-                          <Daily data={dailyData} />
-                        </DailyContainer>
-                      )
-                    case 'Other':
-                      return (
-                        <Details
-                          data={{
-                            uxi: currentConditions.uvi,
-                            humidity: currentConditions.humidity,
-                            wind: currentConditions.wind_speed,
-                            sunrise: currentConditions.sunrise,
-                            sunset: currentConditions.sunset,
-                            timezone: timeZone
-                          }}
-                        />
-                      )
-                    default:
-                      return null
-                  }
-                }}
-                onScroll={(e) => {
-                  setScrollHeight(e.nativeEvent.contentOffset.y)
-                }}
-              />
-            </Box>
-          ) : null}
-        </>
-      )}
+                        )
+                      default:
+                        return null
+                    }
+                  }}
+                  onScroll={(e) => {
+                    console.log(e.nativeEvent.contentOffset.y)
+                    setScrollHeight(e.nativeEvent.contentOffset.y)
+                    animatedHeightVal.value =
+                      200 - e.nativeEvent.contentOffset.y
+                  }}
+                />
+              </View>
+            ) : null}
+          </>
+        )}
+      </StyledSafeArea>
       <Locations
         show={showLocations}
         currentLocation={myLocation}
@@ -199,8 +234,9 @@ const Dashboard = () => {
         close={() => {
           setShowLocations(false)
         }}
+        top={72 + safeArea.top}
       />
-    </StyledSafeArea>
+    </>
   )
 }
 

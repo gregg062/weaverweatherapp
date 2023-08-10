@@ -173,7 +173,6 @@ const getDatafor7days = async (lat: string, lon: string) => {
 }
 
 export const getCurrentWeather = async (city: string) => {
-  console.log('city', city)
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${API_KEY}`
 
   const response = await fetch(url)

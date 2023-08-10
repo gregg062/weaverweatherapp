@@ -38,16 +38,28 @@ export const checkForLocation = () => {
   return response
 }
 
-export const requestLocation = () => {
-  const perm =
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.LOCATION_ALWAYS
-      : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
-  request(perm).then((result) => {
-    if (result !== RESULTS.GRANTED) {
-      Alert.alert(
-        'Please enable location permissions to see your local weather'
-      )
+export const requestLocation = async () => {
+  try {
+    const perm =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.LOCATION_ALWAYS
+        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+
+    const result = await request(perm)
+
+    switch (result) {
+      case RESULTS.GRANTED:
+        return true
+      case RESULTS.DENIED:
+      case RESULTS.UNAVAILABLE:
+      default:
+        Alert.alert(
+          'Please enable location permissions to see your local weather'
+        )
+        return false
     }
-  })
+  } catch (error) {
+    console.error('Error requesting location permission:', error)
+    return false
+  }
 }

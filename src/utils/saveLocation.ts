@@ -15,7 +15,7 @@ export const updateStoredLocations = async (
     (l: location) => l.city === city && l.state === state
   )
   if (!alreadyExists) {
-    data.push({ city: city, state: state })
+    data.unshift({ city: city, state: state })
     AsyncStorage.setItem(type, JSON.stringify(data))
   }
 }

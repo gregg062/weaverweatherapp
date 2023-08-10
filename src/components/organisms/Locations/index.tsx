@@ -16,6 +16,7 @@ interface LocationProps {
   close: () => void
   currentLocation: any
   locationSelected: (city: string) => void
+  top: number
 }
 
 const locationSections = [
@@ -27,7 +28,8 @@ const Locations: FC<LocationProps> = ({
   show,
   close = () => {},
   currentLocation,
-  locationSelected
+  locationSelected,
+  top
 }) => {
   const { colors } = useTheme()
   const [savedLocations, setSavedLocation] = useState<location[]>([])
@@ -61,7 +63,7 @@ const Locations: FC<LocationProps> = ({
     } else {
       const updated = savedLocations.filter((l) => l.city !== city)
       setSavedLocation(updated)
-      setRecentLocations((prev) => [...prev, { city: city, state: state }])
+      setRecentLocations((prev) => [{ city: city, state: state }, ...prev])
       AsyncStorage.setItem('favoriteStorage', JSON.stringify(updated))
       updateStoredLocations('recentStorage', city, state)
     }
@@ -71,7 +73,7 @@ const Locations: FC<LocationProps> = ({
     return {
       zIndex: 999,
       height: show
-        ? withTiming(height - 72, { duration: 300 })
+        ? withTiming(height - (top > 72 ? top : 140), { duration: 300 })
         : withTiming(0, { duration: 200 }),
       backgroundColor: colors.appBackground,
       postion: 'absolute',

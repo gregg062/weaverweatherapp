@@ -17,7 +17,7 @@ const StyledText = styled.Text<Props>`
   flex-shrink: 0;
   flex-grow: 0;
   font-weight: ${({ weight }) => weight ?? '400'};
-  text-transform: ${({ uppercase }) => uppercase && 'uppercase'};
+  text-transform: ${({ uppercase }) => (uppercase ? 'uppercase' : 'none')};
 `
 
 export { StyledText }
