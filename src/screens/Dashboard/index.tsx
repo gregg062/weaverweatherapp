@@ -144,9 +144,7 @@ const Dashboard = () => {
       top: 0,
       left: 0,
       right: 0,
-      height:
-        animatedHeightVal.value > 100 ? 200 - animatedHeightVal.value : 80,
-      zIndex: 300
+      height: animatedHeightVal.value > 100 ? 200 - animatedHeightVal.value : 80
     }
   })
 
@@ -241,20 +239,20 @@ const Dashboard = () => {
                 />
               </InfoContainer>
             ) : null}
+            <Locations
+              show={showLocations}
+              currentLocation={myLocation}
+              locationSelected={(local) => {
+                getWeather(local)
+              }}
+              close={() => {
+                setShowLocations(false)
+              }}
+              top={72 + safeArea.top}
+            />
           </>
         )}
       </StyledSafeArea>
-      <Locations
-        show={showLocations}
-        currentLocation={myLocation}
-        locationSelected={(local) => {
-          getWeather(local)
-        }}
-        close={() => {
-          setShowLocations(false)
-        }}
-        top={72 + safeArea.top}
-      />
     </>
   )
 }

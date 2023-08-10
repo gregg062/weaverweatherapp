@@ -69,21 +69,42 @@ const Locations: FC<LocationProps> = ({
     }
   }
 
+  // const animatedContainerStyle = useAnimatedStyle(() => {
+  //   return {
+  //     zIndex: 999,
+  //     height: show
+  //       ? withTiming(height - (top > 72 ? top : 140), { duration: 300 })
+  //       : withTiming(0, { duration: 200 }),
+  //     backgroundColor: colors.appBackground,
+  //     position: 'absolute',
+  //     padding: show ? 20 : 0,
+  //     bottom: 0,
+  //     right: 0,
+  //     left: 0,
+  //     overflow: 'hidden'
+  //   }
+  // })
   const animatedContainerStyle = useAnimatedStyle(() => {
     return {
       zIndex: 999,
-      height: show
-        ? withTiming(height - (top > 72 ? top : 140), { duration: 300 })
-        : withTiming(0, { duration: 200 }),
       backgroundColor: colors.appBackground,
-      postion: 'absolute',
+      position: 'absolute',
       padding: show ? 20 : 0,
-      bottom: 0,
+      top: 0,
       right: 0,
+      bottom: 0,
       left: 0,
-      overflow: 'hidden'
+      overflow: 'hidden',
+      transform: [
+        {
+          translateY: show
+            ? withTiming(top, { duration: 300 })
+            : withTiming(height, { duration: 200 })
+        }
+      ]
     }
   })
+
   return (
     <Animated.View style={[animatedContainerStyle]}>
       <SectionList
