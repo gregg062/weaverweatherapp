@@ -20,12 +20,14 @@ const Details: FC<DetailProps> = ({ data }) => {
       { max: 9, label: 'Very High' }
     ]
 
+    if (uvIndex === 0) {
+      return 'Low'
+    }
     for (const category of categories) {
       if (uvIndex <= category.max) {
         return category.label
       }
     }
-
     return 'Extreme'
   }
 
@@ -36,7 +38,7 @@ const Details: FC<DetailProps> = ({ data }) => {
           needMargin
           icon={<UxiIcon width={30} />}
           title="UV index"
-          detail={data?.uxi ? calcUvi(data?.uxi) : ''}
+          detail={data?.uxi ? calcUvi(data?.uxi) : 'Low'}
         />
         <DetailCell
           icon={<Humidity width={30} />}
