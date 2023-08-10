@@ -1,4 +1,4 @@
-import { Alert, Platform } from 'react-native'
+import { Platform } from 'react-native'
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions'
 
 export const checkForLocation = () => {
@@ -53,9 +53,6 @@ export const requestLocation = async () => {
       case RESULTS.DENIED:
       case RESULTS.UNAVAILABLE:
       default:
-        Alert.alert(
-          'Please enable location permissions to see your local weather'
-        )
         return false
     }
   } catch (error) {

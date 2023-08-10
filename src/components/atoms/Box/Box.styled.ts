@@ -47,24 +47,24 @@ const Container = styled.View<StyleProps>`
   flex: ${f}`
       : ``};
   background-color: ${({ bc }) => bc};
-  ${({ theme, m }) => (m ? renderValue(m, theme, 'margin') : null)}
-  ${({ theme, p }) => (p ? renderValue(p, theme, 'padding') : null)}
-    ${({ justify }) =>
+  ${({ theme, m }) => (m ? renderValue(m, theme, 'margin') : null)};
+  ${({ theme, p }) => (p ? renderValue(p, theme, 'padding') : null)};
+  ${({ justify }) =>
     justify
       ? `
     justify-content: ${justify}`
-      : ``}
-      ${({ flexDirection }) =>
+      : ``};
+  ${({ flexDirection }) =>
     flexDirection
       ? `
       flex-direction: ${flexDirection}
       `
-      : ''}
-    ${({ align }) =>
+      : ''};
+  ${({ align }) =>
     align
       ? `
     align-items: ${align}`
-      : ``}
+      : ``};
 `
 
 export { Container }
