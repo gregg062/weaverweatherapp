@@ -14,6 +14,7 @@ describe('<Header />', () => {
           cityInfo={{ city: 'New York', state: 'New York' }}
           action={jest.fn()}
           setLocation={jest.fn()}
+          loading={false}
         />
       </ThemeProvider>
     )
@@ -29,6 +30,7 @@ describe('<Header />', () => {
           cityInfo={{ city: 'New York', state: 'New York' }}
           action={jest.fn()}
           setLocation={jest.fn()}
+          loading={false}
         />
       </ThemeProvider>
     )
@@ -46,6 +48,7 @@ describe('<Header />', () => {
           cityInfo={{ city: 'New York', state: 'New York' }}
           action={jest.fn()}
           setLocation={setLocationMock}
+          loading={false}
         />
       </ThemeProvider>
     )
