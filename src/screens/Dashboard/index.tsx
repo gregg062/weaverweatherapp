@@ -27,6 +27,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue
 } from 'react-native-reanimated'
+import { openSettings } from 'react-native-permissions'
 
 const homeSections = [
   { type: 'Hourly', data: [{}] },
@@ -101,6 +102,24 @@ const Dashboard = () => {
     const response = await requestLocation()
     if (response) {
       getInfo()
+    } else {
+      Alert.alert(
+        'Location Permission',
+        'You must allow location access to use this app',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel'
+          },
+          {
+            text: 'Open Settings',
+            onPress: () => {
+              openSettings()
+            }
+          }
+        ]
+      )
     }
   }
 
@@ -127,8 +146,7 @@ const Dashboard = () => {
       right: 0,
       height:
         animatedHeightVal.value > 100 ? 200 - animatedHeightVal.value : 80,
-      zIndex: 300,
-      backgroundColor: 'pink'
+      zIndex: 300
     }
   })
 

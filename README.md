@@ -4,8 +4,9 @@ WeatherWeatherApp is a React Native application that provides users with current
 
 ## 🛠️ Installation & Set Up
 
+1. Ensure you are using the right node version: `nvm use 18`
 1. Install packages and pods: `yarn setup`
-2. Run on simulator:
+1. Run on simulator:
    - iOS: `yarn ios`
    - Android: `yarn android`
 
